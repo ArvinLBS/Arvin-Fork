@@ -1,4 +1,6 @@
-﻿namespace PRG_MAUI_Car_Register
+﻿using System.Text.RegularExpressions;
+
+namespace PRG_MAUI_Car_Register
 {
     class Vehicle
     {
@@ -8,12 +10,16 @@
         private string registrationNumber = string.Empty;
         private string manufacturer = string.Empty;
         private string model = string.Empty;
-
+        private string yearModel = string.Empty;
+        public bool RegisterOk = false;
+        
         // Konstruktor (en metod med samma namn som klassen, som returnerar ett objekt)
         public Vehicle(Type vehicleType) // en konstruktor kan, men måste inte, ta parametrar
         {
             this.vehicleType = vehicleType;
         }
+
+        Regex regex = new Regex("[@_!#$%^&*()<>?/|}{~:]");
 
         // Get-Set för att hålla variablerna privata, och för att validera inkommande värden från UI (user interface, användargränssnittet)
         public string RegistrationNumber
@@ -22,6 +28,7 @@
 
             set
             {
+                if (value == null) { } else { 
                 if (value.Length == 6)
                 {
                     for (int i = 0; i < 3; i++)
@@ -52,37 +59,115 @@
                 registrationNumber = value.ToUpper();
             }
         }
-
-        // Fordonstyp tas in från dropdown-menyn, och behöver därför inte valideras
+        }
         public Type VehicleType
         {
             get { return vehicleType; }
             set { this.vehicleType = value; }
         }
 
-        //TODO Tillverkare ska valideras, sparas i objektet och visas i UI
         public string Model
         {
             get { return model; }
-            set { this.model = value; }
+            set { if (value == null) { } else
+                {
+                    if (value.Length >= 1) {
+                        if (!regex.IsMatch(value)) {
+                        this.model = value;
+                        }
+                     else
+
+                    {
+                        throw new ArgumentException("Modell få inte ha orelevanta symboler!");
+                    }
+
+                }
+
+
+
+                    else
+
+                    {
+                        throw new ArgumentException("Inkorrekt model, Ange en giltig modell:"); }
+                }
+
+           }
         }
 
-        //TODO Modell ska valideras, sparas i objektet och visas i UI
         public string Manufacturer
         {
             get { return manufacturer; }
-            set { this.manufacturer = value; }
+            set { if (value == null) { } else
+                {
+                    if (value.Length >= 1) { this.manufacturer = value; }else
+                    {
+                        throw new ArgumentException("Inkorrekt tillverkare, Ange en giltig tillverkare:");}
+                }
+
+            }
+        
         }
 
-        //TODO Att spara årsmodell ska möjliggöras, ska valideras, sparas i objektet och visas i UI
+
+        public string YearModel
+        {
+            get { return yearModel; }
+
+            set
+            {
+                if (value == null) { }
+                else
+                {
+                    if (value.Length < 4) { throw new ArgumentException("Ange exakt 4 siffror!"); } else { 
+
+                    if (value.Length == 4)
+                    {
 
 
-        // Klassens  eventuella övriga metoder brukar finnas här, här en override av ToString()
+                        if (Regex.IsMatch(value, "^[0-9]*$"))
+                        {
+                            this.yearModel = value;
+                                RegisterOk = true;
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Inkorrekt årdsmodell måste innehålla exakt 4 siffror");
+                        }
 
-        //TODO Modifiera overriden på ToString() så att allt visas som önskat i UIs listBox
+
+
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Inkorrekt årdsmodell måste innehålla exakt 4 siffror");
+                    }
+
+                    
+                }
+            }
+           }
+        }
+
+       
+      
+
         public override string ToString()
         {
-            return this.registrationNumber + "\t" + this.vehicleType + "\t" + this.manufacturer + "\t" + this.model;
+
+            if (RegisterOk = true)
+            {
+
+                return this.registrationNumber + "\t" + this.vehicleType + "\t" + this.model + "\t" + this.manufacturer + "\t" + this.yearModel;
+
+            } else {
+
+                return null;
+            }
+
         }
+
+
     }
+
+
 }

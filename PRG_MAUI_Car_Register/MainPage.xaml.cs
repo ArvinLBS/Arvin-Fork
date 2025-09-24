@@ -10,24 +10,67 @@
             pickerType.SelectedIndex = 0;
         }
 
+        
+        private void CheckEmptyRegister()
+        {
+            if (string.IsNullOrEmpty(entryRegistrationNumber.Text))
+            {
+
+                throw new ArgumentException("Inkorret registreringsnummer: De första tre tecknen måste vara bokstäver och de tre andra siffror.");
+
+            }
+
+            if (string.IsNullOrEmpty(entryManufacturer.Text))
+            {
+                throw new ArgumentException("Inkorrekt Tillverkare: Måste innehålla bokstäver av tillverkare");
+            }
+
+            if (string.IsNullOrEmpty(entryModel.Text))
+            {
+                throw new ArgumentException("Inkorrekt Modell: Måste innehålla bokstäver av modellen och får inte ha orelevanta symboler");
+            }
+
+            if (string.IsNullOrEmpty(EntryYearModel.Text))
+            {
+                throw new ArgumentException("Inkorrekt Årsmodell: Måste ha exakt 4 siffror");
+            }
+
+
+        }
+
+
         private void OnRegisterClicked(object sender, EventArgs e)
         {
-            try
-            {
+            try { 
+                
                 Vehicle vehicle = new Vehicle((Vehicle.Type)pickerType.SelectedIndex);
 
-                string regNr = entryRegistrationNumber.Text;
-                vehicle.RegistrationNumber = regNr;
-                vehicle.Manufacturer = entryManufacturer.Text;
-                vehicle.Model = entryModel.Text;
 
-                vehicleList.Add(vehicle);
-                listViewVehicles.ItemsSource = null;
+
+
+                    CheckEmptyRegister();
+
+
+                    string regNr = entryRegistrationNumber.Text;
+                    vehicle.RegistrationNumber = regNr;
+                    vehicle.Manufacturer = entryManufacturer.Text;
+                    vehicle.Model = entryModel.Text;
+                    vehicle.YearModel = EntryYearModel.Text;
+
+                    vehicleList.Add(vehicle);
+
+
+                    listViewVehicles.ItemsSource = null;
                 listViewVehicles.ItemsSource = vehicleList;
 
                 entryRegistrationNumber.Text = string.Empty;
                 entryManufacturer.Text = string.Empty;
                 entryModel.Text = string.Empty;
+                EntryYearModel.Text = string.Empty;
+
+
+                
+
             }
             catch (ArgumentException ex)
             {
@@ -65,15 +108,18 @@
 
         private void OnSearchClicked(object sender, EventArgs e)
         {
-            string searchTerm = entrySearchRegistrationNumber.Text?.ToLower();
+            string searchReg = entrySearchRegistrationNumber.Text?.ToLower();
+            string searchManufactor = entryManufacturer.Text?.ToLower();
+            string searchModel = entryModel.Text?.ToLower();
+            string searchÅrmodel = EntryYearModel.Text?.ToLower();
 
-            if (string.IsNullOrEmpty(searchTerm))
+            if (string.IsNullOrEmpty(searchReg) || string.IsNullOrEmpty(searchManufactor) || string.IsNullOrEmpty(searchModel))
             {
-                entrySearchRegistrationNumber.Text = "Ange ett registreringsnummer för att söka.";
+                entrySearchRegistrationNumber.Placeholder = "Ange ett registreringsnummer för att söka.";
                 return;
             }
 
-            var foundVehicle = vehicleList.FirstOrDefault(v => v.RegistrationNumber?.ToLower() == searchTerm);
+            var foundVehicle = vehicleList.FirstOrDefault(v => v.RegistrationNumber?.ToLower() == searchReg);
 
             if (foundVehicle != null)
             {
@@ -82,6 +128,7 @@
                                          $"Tillverkare: {foundVehicle.Manufacturer}\n" +
                                          $"Modell: {foundVehicle.Model}\n" +
                                          $"Typ: {foundVehicle.VehicleType}";
+
             }
             else
             {
