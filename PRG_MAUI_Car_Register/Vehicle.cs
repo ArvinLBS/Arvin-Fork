@@ -126,9 +126,13 @@ namespace PRG_MAUI_Car_Register
 
                         if (Regex.IsMatch(value, "^[0-9]*$"))
                         {
+                                int parsed = int.Parse(value);
+                                if (parsed >= 1985) {
+                                
                             this.yearModel = value;
                                 RegisterOk = true;
-                        }
+                                } else { throw new ArgumentException("Det måste vara efter 1985!"); }
+                            }
                         else
                         {
                             throw new ArgumentException("Inkorrekt årdsmodell måste innehålla exakt 4 siffror");
