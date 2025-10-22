@@ -1,4 +1,6 @@
-﻿namespace PRG_MAUI_Car_Register
+﻿using PRG_MAUI_Car_Register.Model;
+
+namespace PRG_MAUI_Car_Register
 {
     public partial class MainPage : ContentPage
     {
@@ -10,7 +12,7 @@
             pickerType.SelectedIndex = 0;
         }
 
-        
+
         private void CheckEmptyRegister()
         {
             if (string.IsNullOrEmpty(entryRegistrationNumber.Text))
@@ -38,16 +40,32 @@
 
         }
 
+      
 
         private void OnRegisterClicked(object sender, EventArgs e)
         {
-            try { 
-                
-                Vehicle vehicle = new Vehicle((Vehicle.Type)pickerType.SelectedIndex);
+            try
+            {
 
+                var Picked = pickerType.SelectedIndex;
 
+                if (pickerType.SelectedItem.ToString() == "Bil") {
 
+                    Bil vehicle = new Bil((Bil.Type)pickerType.SelectedIndex);
+                    CheckEmptyRegister();
 
+                    string regNr = entryRegistrationNumber.Text;
+                    vehicle.RegistrationNumber = regNr;
+                    vehicle.Manufacturer = entryManufacturer.Text;
+                    vehicle.Model = entryModel.Text;
+                    vehicle.YearModel = EntryYearModel.Text;
+
+                    vehicleList.Add(vehicle);
+                }
+
+                if (pickerType.SelectedItem.ToString() == "MC")
+                {
+                    MC vehicle = new MC((MC.Type)pickerType.SelectedIndex);
                     CheckEmptyRegister();
 
 
@@ -58,9 +76,26 @@
                     vehicle.YearModel = EntryYearModel.Text;
 
                     vehicleList.Add(vehicle);
+                }
+
+                if (pickerType.SelectedItem.ToString() == "Lastbil")
+                {
+                    Lastbil vehicle = new Lastbil((Lastbil.Type)pickerType.SelectedIndex);
+                    CheckEmptyRegister();
 
 
-                    listViewVehicles.ItemsSource = null;
+                    string regNr = entryRegistrationNumber.Text;
+                    vehicle.RegistrationNumber = regNr;
+                    vehicle.Manufacturer = entryManufacturer.Text;
+                    vehicle.Model = entryModel.Text;
+                    vehicle.YearModel = EntryYearModel.Text;
+
+                    vehicleList.Add(vehicle);
+                }
+
+
+
+                listViewVehicles.ItemsSource = null;
                 listViewVehicles.ItemsSource = vehicleList;
 
                 entryRegistrationNumber.Text = string.Empty;
@@ -69,7 +104,7 @@
                 EntryYearModel.Text = string.Empty;
 
 
-                
+
 
             }
             catch (ArgumentException ex)
@@ -87,15 +122,15 @@
 
             if (radioCar.IsChecked)
             {
-                filteredList = vehicleList.Where(v => v.VehicleType == Vehicle.Type.Bil).ToList();
+                filteredList = vehicleList.OfType<Bil>().Cast<Vehicle>().ToList();
             }
             else if (radioMC.IsChecked)
             {
-                filteredList = vehicleList.Where(v => v.VehicleType == Vehicle.Type.MC).ToList();
+                filteredList = vehicleList.OfType<MC>().Cast<Vehicle>().ToList();
             }
             else if (radioTruck.IsChecked)
             {
-                filteredList = vehicleList.Where(v => v.VehicleType == Vehicle.Type.Lastbil).ToList();
+                filteredList = vehicleList.OfType<Lastbil>().Cast<Vehicle>().ToList();
             }
             else
             {
