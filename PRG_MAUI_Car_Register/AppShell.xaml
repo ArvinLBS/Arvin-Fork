@@ -3,13 +3,47 @@
     x:Class="PRG_MAUI_Car_Register.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:PRG_MAUI_Car_Register"
+    xmlns:local="clr-namespace:PRG_MAUI_Car_Register.View"
     Shell.FlyoutBehavior="Disabled"
     Title="PRG_MAUI_Car_Register">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="Lägg till fordon" >
+            <ShellContent
+                 Title="Home"
+                   ContentTemplate="{DataTemplate local:MainPage}"
+                 Route="MainPage" />
+            
+        </Tab>
 
+        <Tab Title="Bilar" >
+            <ShellContent
+         Title="Bil"
+           ContentTemplate="{DataTemplate local:Bil}"
+         Route="Bil" />
+
+        </Tab>
+
+
+        <Tab Title="MC" >
+            <ShellContent
+         Title="mc"
+           ContentTemplate="{DataTemplate local:mc}"
+         Route="mc" />
+
+        </Tab>
+
+
+        <Tab Title="Lastbilar" >
+            <ShellContent
+         Title="lastbil"
+           ContentTemplate="{DataTemplate local:lastbil}"
+         Route="lastbil" />
+
+        </Tab>
+    </TabBar>
+    
+    
 </Shell>
+
+    

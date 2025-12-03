@@ -34,8 +34,8 @@ namespace PRG_MAUI_Car_Register
                 {
                     wndLifeCycleBuilder.OnWindowCreated(window =>
                     {
-                        const int windowWidth = 400;
-                        const int windowHeight = 800;
+                        const int windowWidth = 900;
+                        const int windowHeight = 1000;
 
                         var mauiWindow = (MauiWinUIWindow)window;
                         var windowId = Win32Interop.GetWindowIdFromWindow(mauiWindow.WindowHandle);

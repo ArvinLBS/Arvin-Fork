@@ -22,6 +22,7 @@ namespace PRG_MAUI_Car_Register.ModelView
         public ObservableCollection<Vehicle> ListViewVehicles { get; set; } = new ObservableCollection<Vehicle>();
         public ObservableCollection<string> VehicleTypePicker { get; set; } = new ObservableCollection<string> { "Bil", "MC", "Lastbil" };
 
+        //public ObservableCollection<Vehicle> ListViewBil { get; set; } = new ObservableCollection<Vehicle>();
         public ICommand RegisterCarCommand { get; }
         public bool CarRegisterOk = false;
         public bool ValidateOk = false;
@@ -31,6 +32,9 @@ namespace PRG_MAUI_Car_Register.ModelView
         private string manufacture;
         private string yearmodel;
         private string selectedvehicle;
+        private string bilList;
+        private string mclist;
+        private string lastbillist;
 
         Regex regex = new Regex("[@_!#$%^&*()<>?/|}{~:]");
 
@@ -109,6 +113,54 @@ namespace PRG_MAUI_Car_Register.ModelView
 
         }
 
+        public string ListViewBil
+        {
+            get => bilList;
+            set
+            {
+                if (bilList != value)
+                {
+                    bilList = value;
+                    OnPropertyChanged(nameof(ListViewBil));
+
+                }
+            }
+
+        }
+
+
+        public string ListViewMC
+        {
+            get => mclist;
+            set
+            {
+                if (mclist != value)
+                {
+                    mclist = value;
+                    OnPropertyChanged(nameof(ListViewMC));
+
+                }
+            }
+
+        }
+
+
+        public string ListViewLastbil
+        {
+            get => lastbillist;
+            set
+            {
+                if (lastbillist != value)
+                {
+                    lastbillist = value;
+                    OnPropertyChanged(nameof(ListViewLastbil));
+
+                }
+            }
+
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name) =>
@@ -125,7 +177,6 @@ namespace PRG_MAUI_Car_Register.ModelView
 
             if (CarRegisterOk == true && ValidateOk == true)
             {
-                //if (vehicletype.GetType().Name == "Bil") {
 
                 if (VehicleTypePicker != null)
                 {
@@ -147,13 +198,19 @@ namespace PRG_MAUI_Car_Register.ModelView
 
                         });
 
+                        ListViewBil = ListViewBil + " | " + Register + "\t" + selectedvehicle + "\t" + ModelCar + "\t" + Manufacture + "\t" + Yearmodel;
+
+
+
+
+
+
+
                     }
 
 
                     if (selectedvehicle == "MC")
                     {
-
-
 
                         ListViewVehicles.Add(new MC(MC.Type.MC)
                         {
@@ -164,14 +221,14 @@ namespace PRG_MAUI_Car_Register.ModelView
 
                         });
 
+                        ListViewMC = ListViewMC + " | " + Register + "\t" + selectedvehicle + "\t" + ModelCar + "\t" + Manufacture + "\t" + Yearmodel;
+
                     }
 
 
 
                     if (selectedvehicle == "Lastbil")
                     {
-
-
 
                         ListViewVehicles.Add(new Lastbil(Lastbil.Type.Lastbil)
                         {
@@ -181,6 +238,10 @@ namespace PRG_MAUI_Car_Register.ModelView
                             YearModel = Yearmodel,
 
                         });
+
+                        ListViewLastbil = ListViewLastbil + " | " + Register + "\t" + selectedvehicle + "\t" + ModelCar + "\t" + Manufacture + "\t" + Yearmodel;
+
+                        
 
                     }
 
