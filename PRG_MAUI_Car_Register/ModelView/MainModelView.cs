@@ -1,4 +1,5 @@
 ﻿using PRG_MAUI_Car_Register.Model;
+using PRG_MAUI_Car_Register.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,15 +16,18 @@ namespace PRG_MAUI_Car_Register.ModelView
 {
     public class MainModelView : INotifyPropertyChanged
     {
+        private readonly ICarStorageService _storage;
 
         //List<Vehicle> vehicleList = new List<Vehicle>();
 
 
         public ObservableCollection<Vehicle> ListViewVehicles { get; set; } = new ObservableCollection<Vehicle>();
         public ObservableCollection<string> VehicleTypePicker { get; set; } = new ObservableCollection<string> { "Bil", "MC", "Lastbil" };
-
+        //public string VehicleType {  get; set; }
         //public ObservableCollection<Vehicle> ListViewBil { get; set; } = new ObservableCollection<Vehicle>();
         public ICommand RegisterCarCommand { get; }
+        public ICommand SaveCommand { get; }
+
         public bool CarRegisterOk = false;
         public bool ValidateOk = false;
 
@@ -98,6 +102,23 @@ namespace PRG_MAUI_Car_Register.ModelView
 
         }
 
+
+        public string VehicleType
+        {
+            get => selectedvehicle;
+            set
+            {
+                if (selectedvehicle != value)
+                {
+                    selectedvehicle = value;
+                    OnPropertyChanged(nameof(VehicleType));
+
+                }
+            }
+
+
+        }
+
         public string VehicleSelected
         {
             get => selectedvehicle;
@@ -166,10 +187,37 @@ namespace PRG_MAUI_Car_Register.ModelView
         protected void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public MainModelView()
+        public MainModelView(ICarStorageService storage)
         {
+            _storage = storage;
             RegisterCarCommand = new Command(AddCarRegister);
+            SaveCommand = new Command(async () => await SaveAsync());
+
         }
+
+        public async Task InitializeAsync()
+        {
+            await LoadAsync();
+        }
+
+        private async Task LoadAsync()
+        {
+            var vehicles = await _storage.LoadAsync();
+            ListViewVehicles.Clear();
+
+            foreach (var vehicle in vehicles)
+            ListViewVehicles.Add(vehicle);
+
+
+
+        }
+        private async Task SaveAsync()
+        {
+
+            await _storage.SaveAsync(ListViewVehicles.ToList());
+        }
+
+
         private void AddCarRegister()
         {
             CheckEmptyRegister();
@@ -189,14 +237,16 @@ namespace PRG_MAUI_Car_Register.ModelView
 
                         
 
-                        ListViewVehicles.Add(new Bil(Bil.Type.Bil)
+                        ListViewVehicles.Add(new Vehicle()
                         {
                             RegistrationNumber = Register,
                             Model = ModelCar,
                             Manufacturer = Manufacture,
                             YearModel = Yearmodel,
+                            VehicleType = selectedvehicle,
 
                         });
+
 
                         ListViewBil = ListViewBil + " | " + Register + "\t" + selectedvehicle + "\t" + ModelCar + "\t" + Manufacture + "\t" + Yearmodel;
 
@@ -212,14 +262,17 @@ namespace PRG_MAUI_Car_Register.ModelView
                     if (selectedvehicle == "MC")
                     {
 
-                        ListViewVehicles.Add(new MC(MC.Type.MC)
+
+                        ListViewVehicles.Add(new Vehicle()
                         {
                             RegistrationNumber = Register,
                             Model = ModelCar,
                             Manufacturer = Manufacture,
                             YearModel = Yearmodel,
+                            VehicleType = selectedvehicle,
 
                         });
+
 
                         ListViewMC = ListViewMC + " | " + Register + "\t" + selectedvehicle + "\t" + ModelCar + "\t" + Manufacture + "\t" + Yearmodel;
 
@@ -230,14 +283,17 @@ namespace PRG_MAUI_Car_Register.ModelView
                     if (selectedvehicle == "Lastbil")
                     {
 
-                        ListViewVehicles.Add(new Lastbil(Lastbil.Type.Lastbil)
+
+                        ListViewVehicles.Add(new Vehicle()
                         {
                             RegistrationNumber = Register,
                             Model = ModelCar,
                             Manufacturer = Manufacture,
                             YearModel = Yearmodel,
+                            VehicleType = selectedvehicle,
 
                         });
+
 
                         ListViewLastbil = ListViewLastbil + " | " + Register + "\t" + selectedvehicle + "\t" + ModelCar + "\t" + Manufacture + "\t" + Yearmodel;
 
@@ -357,8 +413,7 @@ namespace PRG_MAUI_Car_Register.ModelView
 
         }
 
-
-
+  
 
         private void CheckEmptyRegister()
         {

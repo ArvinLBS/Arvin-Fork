@@ -23,6 +23,7 @@
             <Entry x:Name="entryModel" Text="{Binding ModelCar}" Placeholder="Modell" />
             <Entry x:Name="EntryYearModel" Text="{Binding Yearmodel}" Placeholder="Års modell" />
             <Button Command="{Binding RegisterCarCommand}" x:Name="buttonRegister" Text="Registrera"  Margin="0,0,0,20" BackgroundColor="DarkRed"/>
+            <Button Command="{Binding SaveCommand}" x:Name="buttonRegisters" Text="Spara till fil"  Margin="0,0,0,20" BackgroundColor="DarkRed"/>
 
             <ListView x:Name="listViewVehicles" ItemsSource="{Binding ListViewVehicles}"  Margin="0,0,0,20"/>
 

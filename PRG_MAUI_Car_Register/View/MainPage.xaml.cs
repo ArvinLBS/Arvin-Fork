@@ -1,6 +1,7 @@
 ﻿using PRG_MAUI_Car_Register.Model;
 using System.Collections.ObjectModel;
 using  PRG_MAUI_Car_Register.ModelView;
+using PRG_MAUI_Car_Register.Service;
 
 namespace PRG_MAUI_Car_Register.View
 {
@@ -18,9 +19,14 @@ namespace PRG_MAUI_Car_Register.View
         {
             InitializeComponent();
 
-            viewmodelmain = new MainModelView();
+            var vm = new MainModelView(new JsonCarStorageService());
+            BindingContext = vm;
 
-            BindingContext = MainPage.viewmodelmain;
+            Loaded += async (s, e) =>
+            {
+                await vm.InitializeAsync();
+            };
+
         }
 
     }

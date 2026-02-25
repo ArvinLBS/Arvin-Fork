@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG_MAUI_Car_Register.Model
 {
-    internal class MC : Vehicle
+    public class MC : Vehicle
     {
         public string category;
         public enum Type { MC, Bil, Lastbil };
@@ -15,10 +15,10 @@ namespace PRG_MAUI_Car_Register.Model
         {
             this.vehicleType = vehicleType;
         }
-        public override void GetDescription()
-        {
+        //public override void GetDescription()
+       // {
 
-        }
+       // }
 
     }
 }

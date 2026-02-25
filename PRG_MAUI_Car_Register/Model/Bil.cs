@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace PRG_MAUI_Car_Register.Model
 {
-    internal class Lastbil : Vehicle
+    public class Bil : Vehicle
     {
-
-        public double loadcapacity;
-
-        public enum Type { MC, Bil, Lastbil };
+        public int doors;
+        public enum Type { Bil, MC, Lastbil };
         private Type vehicleType;
-        public Lastbil(Type vehicleType)
+        public Bil(Type vehicleType)
         {
             this.vehicleType = vehicleType;
         }
 
-        public override void GetDescription()
-        {
+        //public override void GetDescription() { 
+        
+        //}
 
-        }
+
+
 
     }
 }

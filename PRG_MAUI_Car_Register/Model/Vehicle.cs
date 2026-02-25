@@ -2,7 +2,7 @@
 
 namespace PRG_MAUI_Car_Register
 {
-    public abstract class Vehicle
+    public class Vehicle
     {
 
         // Medlemsvariabler
@@ -13,6 +13,7 @@ namespace PRG_MAUI_Car_Register
         private string manufacturer = string.Empty;
         private string model = string.Empty;
         private string yearModel = string.Empty;
+        public string vehicletype = string.Empty;
         public Type vehicleType;
         public bool RegisterOk = false;
 
@@ -26,13 +27,29 @@ namespace PRG_MAUI_Car_Register
 
 
         // Get-Set för att hålla variablerna privata, och för att validera inkommande värden från UI (user interface, användargränssnittet)
-        public Type VehicleType
+        //public string VehicleType
+        // {
+        //get { return vehicleType; }
+
+        //   set { vehicleType = value; }
+
+        // }
+
+        public string VehicleType
         {
-            get { return vehicleType; }
+            get { return vehicletype; }
 
-            set { vehicleType = value; }
+            set
+            {
+                if (value == null) { }
+                else
+                {
 
+
+                    vehicletype = value;
+                }
             }
+        }
 
         public string RegistrationNumber
         {
@@ -120,7 +137,7 @@ namespace PRG_MAUI_Car_Register
         }
 
 
-        public abstract void GetDescription();
+        //public abstract void GetDescription();
 
         public override string ToString()
         {
@@ -128,7 +145,7 @@ namespace PRG_MAUI_Car_Register
             if (RegisterOk = true)
             {
                //return "test";
-                return registrationNumber + "\t" + vehicleTypeName + "\t" + model + "\t" + manufacturer + "\t" + yearModel;
+                return registrationNumber + "\t" + vehicletype + "\t" + model + "\t" + manufacturer + "\t" + yearModel;
 
             }
             else
